@@ -1,0 +1,29 @@
+{
+  "name": "America Consular Slot Booking",
+  "version": "3.0",
+  "manifest_version": 3,
+  "description": "America Consular Slot Booking Tool",
+
+  "action": {
+    "default_title": "America Consular Slot Booking 2.0",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["scripting", "activeTab", "cookies"],
+  "icons": {
+    "128": "india.png",
+    "48": "india.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.usvisascheduling.com/*",
+        "https://www.usvisascheduling.com/"
+      ],
+      "js": ["script.js"]
+    }
+  ],
+  "host_permissions": ["https://www.kumarsambhav.me/", "*://*/*"]
+}

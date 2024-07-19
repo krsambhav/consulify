@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    />
+    <link rel="stylesheet" href="./tailwind.min.css" />
+    <style>
+      * {
+        font-family: "Courier New", Courier, monospace;
+      }
+    </style>
+  </head>
+
+  <body
+    style="
+      width: 630px;
+      height: 650px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-wrap: wrap;
+    "
+    class="font-bold"
+  >
+    <div class="country-name-container" style="margin-top: 20px">
+      <span>India</span><span id="country-name"></span>
+    </div>
+    <div class="primary-name-container" style="margin-top: 5px">
+      <span>User: </span><span id="primary-user-name-span"></span> <br />
+      <span>Total Pax: </span><span id="primary-user-qty-span"></span>
+    </div>
+    <br />
+    <select id="userSelect"></select>
+    <div
+      class="primary-dependent-container mt-5"
+      style="
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
+      "
+    >
+      <div class="primaryID-container">
+        <!-- <p>Primary ID:</p> -->
+        <input
+          type="text"
+          id="primary-id-input"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+          placeholder="Primary ID"
+        />
+        <button
+          id="set-primary-id-btn"
+          class="btn bg-black text-white rounded-md px-2 py-1 shadow-md"
+        >
+          Fetch
+        </button>
+      </div>
+      <div class="dependents-container">
+        <!-- <p>Dependent IDs:</p> -->
+        <input
+          type="text"
+          id="dependents-id-input"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm outline-none"
+          placeholder="Dependents IDs"
+        />
+        <button
+          id="set-dependents-id-btn"
+          class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+        >
+          Fetch
+        </button>
+      </div>
+    </div>
+    <!-- <div class="city-container">
+      <p>Location:</p>
+      <input type="text" id="city-id-input" />
+    </div> -->
+    <div class="city-container mt-5 flex flex-row gap-10 hidden">
+      <select
+        id="city-selector"
+        class="border border-black shadow-md rounded-md px-2 py-1 outline-none"
+      >
+        <option value="chennai">Chennai</option>
+        <option value="mumbai" selected>Mumbai</option>
+        <option value="kolkata">Kolkata</option>
+        <option value="delhi">Delhi</option>
+        <option value="hyderabad">Hyderabad</option>
+      </select>
+      <select
+        id="consular-city-selector"
+        class="border border-black shadow-md rounded-md px-2 py-1 outline-none"
+      >
+        <option value="chennai">Chennai</option>
+        <option value="mumbai" selected>Mumbai</option>
+        <option value="kolkata">Kolkata</option>
+        <option value="delhi">Delhi</option>
+        <option value="hyderabad">Hyderabad</option>
+      </select>
+    </div>
+    <div
+      class="earliest-date-filter-container mt-8 gap-10"
+      style="display: flex; flex-direction: row; justify-content: center"
+    >
+      <div class="month">
+        <p>Earliest Month:</p>
+        <input
+          type="number"
+          id="earliest-month-input"
+          value="3"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+      <div class="date">
+        <p>Earliest Date:</p>
+        <input
+          type="number"
+          id="earliest-date-input"
+          value="1"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+    </div>
+    <div
+      class="last-date-filter-container mt-5 gap-10"
+      style="display: flex; flex-direction: row; justify-content: center"
+    >
+      <div class="month">
+        <p>Last Month:</p>
+        <input
+          type="number"
+          id="last-month-input"
+          value="3"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+      <div class="date">
+        <p>Last Date:</p>
+        <input
+          type="number"
+          id="last-date-input"
+          value="30"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-row gap-10">
+      <div class="res-container mt-5">
+        <p>Reschedule?</p>
+        <input
+          type="number"
+          id="res-input"
+          value="0"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+      <div class="cons-diff-container mt-5">
+        <p>Consular Last Date</p>
+        <input
+          type="number"
+          id="cons-diff-input"
+          value="20"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row gap-10">
+      <div class="await-container mt-5">
+        <p>Await?</p>
+        <input
+          type="number"
+          id="await-input"
+          value="1"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+      <div class="timeout-container mt-5">
+        <p>Timeout (Sec)?</p>
+        <input
+          type="number"
+          id="timeout-input"
+          value="10"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+    </div>
+    <div class="flex flex-row gap-10">
+      <div class="delay-container mt-5">
+        <p>Delay Multiplier:</p>
+        <input
+          type="number"
+          id="delay-input"
+          value="10"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+      <div class="sleeper-container mt-5">
+        <p>Sleeper?</p>
+        <input
+          type="number"
+          id="sleeper-input"
+          value="1"
+          class="shadow-md border border-black outline-none px-2 py-1 rounded-sm"
+        />
+      </div>
+    </div>
+    <div class="fill-btn" style="margin-top: 40px">
+      <button
+        id="fill-btn"
+        class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+      >
+        Fill
+      </button>
+      <button
+        id="start-btn"
+        class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+      >
+        Start OFC & Consular
+      </button>
+      <button
+        id="start-ofc-btn"
+        class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+      >
+        OFC
+      </button>
+      <button
+        id="start-consular-btn"
+        class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+      >
+        Consular
+      </button>
+      <button
+        id="reset-btn"
+        class="btn bg-black text-white rounded-md px-2 py-1 shadow-md outline-none"
+      >
+        Reset Dates
+      </button>
+    </div>
+  </body>
+  <script src="./popup.js"></script>
+  <script src="./datepicker.min.js"></script>
+</html>
