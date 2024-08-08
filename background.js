@@ -555,13 +555,13 @@ async function startConsular(city) {
     return 0;
   }
   var latestConsularSlotID = consularSlots[0]["ID"];
-  // console.log(consularSlots, latestConsularSlotID)
-  // var consularBookingResponse = await bookConsularSlot(
-  //   city,
-  //   latestConsularDateID,
-  //   latestConsularSlotID
-  // );
-  // console.log(latestConsularDateID, latestConsularSlotID);
+  console.log(consularSlots, latestConsularSlotID)
+  var consularBookingResponse = await bookConsularSlot(
+    'hyderabad',
+    latestConsularDateID,
+    latestConsularSlotID
+  );
+  console.log(latestConsularDateID, latestConsularSlotID);
   if (consularBookingResponse["AllScheduled"] == true) {
     consularBooked = true;
     sendCustomMsg(
