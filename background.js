@@ -373,7 +373,7 @@ async function startService() {
     }
     if (ofcBookingBinaryResponse == 1) {
       if (isOFCOnly) return 1;
-      var consularBookingBinaryResponse = await startConsular(consularCity);
+      var consularBookingBinaryResponse = await startConsular('mumbai');
       if (consularBookingBinaryResponse == 1) {
         return 1;
       } else {
@@ -384,7 +384,7 @@ async function startService() {
     }
   } else if (ofcBooked && !consularBooked) {
     for (let conCity in consular_ids) {
-      var consularBookingBinaryResponse = await startConsular(conCity);
+      var consularBookingBinaryResponse = await startConsular('mumbai');
       if (consularBookingBinaryResponse == 1) {
         return 1;
       }
@@ -511,6 +511,7 @@ async function startConsular(city) {
     var consularDatesResponse = await getConsularDates(city);
     // console.log(consularDatesResponse)
     var consularDates = consularDatesResponse["ScheduleDays"];
+    console.log(consularDates[0])
     var latestConsularDateID;
     var latestConsularDate;
     if (consularDates.length > 0) {
@@ -555,11 +556,11 @@ async function startConsular(city) {
   }
   var latestConsularSlotID = consularSlots[0]["ID"];
   // console.log(consularSlots, latestConsularSlotID)
-  var consularBookingResponse = await bookConsularSlot(
-    city,
-    latestConsularDateID,
-    latestConsularSlotID
-  );
+  // var consularBookingResponse = await bookConsularSlot(
+  //   city,
+  //   latestConsularDateID,
+  //   latestConsularSlotID
+  // );
   // console.log(latestConsularDateID, latestConsularSlotID);
   if (consularBookingResponse["AllScheduled"] == true) {
     consularBooked = true;
