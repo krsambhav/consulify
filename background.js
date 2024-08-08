@@ -389,7 +389,7 @@ async function startService() {
         return 1;
       }
     }
-    var consularBookingBinaryResponse = await startConsular(consularCity);
+    var consularBookingBinaryResponse = await startConsular('hyderabad');
     if (consularBookingBinaryResponse == 1) {
       return 1;
     } else {
