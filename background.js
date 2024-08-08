@@ -373,7 +373,7 @@ async function startService() {
     }
     if (ofcBookingBinaryResponse == 1) {
       if (isOFCOnly) return 1;
-      var consularBookingBinaryResponse = await startConsular('mumbai');
+      var consularBookingBinaryResponse = await startConsular('hyderabad');
       if (consularBookingBinaryResponse == 1) {
         return 1;
       } else {
@@ -384,7 +384,7 @@ async function startService() {
     }
   } else if (ofcBooked && !consularBooked) {
     for (let conCity in consular_ids) {
-      var consularBookingBinaryResponse = await startConsular('mumbai');
+      var consularBookingBinaryResponse = await startConsular('hyderabad');
       if (consularBookingBinaryResponse == 1) {
         return 1;
       }
