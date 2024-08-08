@@ -389,12 +389,12 @@ async function startService() {
         return 1;
       }
     }
-    // var consularBookingBinaryResponse = await startConsular(consularCity);
-    // if (consularBookingBinaryResponse == 1) {
-    //   return 1;
-    // } else {
-    //   return 0;
-    // }
+    var consularBookingBinaryResponse = await startConsular(consularCity);
+    if (consularBookingBinaryResponse == 1) {
+      return 1;
+    } else {
+      return 0;
+    }
   } else {
     return 1;
   }
