@@ -547,8 +547,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // city = document.getElementById("city-id-input").value.toLowerCase();
     var userDetails = {
       primaryName,
-      primaryID,
-      dependentsIDs,
+      primaryID : 'de9922cd-005a-ef11-b4ac-001dd8003c0f',
+      dependentsIDs : '["de9922cd-005a-ef11-b4ac-001dd8003c0f","d2ec04a8-0f5a-ef11-b4ad-001dd80bf530"]',
       lastMonth,
       lastDate,
       earliestMonth,

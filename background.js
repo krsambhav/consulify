@@ -106,6 +106,7 @@ var ofcBookedDate = 0;
 var ofcBookedMonth = 0;
 var ofcBookedTotalDaysSinceZero = 0;
 var tempMinute = 100;
+var tempCity = 'hyderabad'
 
 function sleep(ms) {
   clearInterval(sleepSetTimeout_ctrl);
@@ -277,6 +278,7 @@ function randomFloat(min, max) {
 }
 
 function populateGroup() {
+  console.log(applicationIDs)
   if (applicationIDs.length == 0) {
     return primaryID;
   } else {
@@ -336,7 +338,7 @@ function getEligibleDates(formattedDatesArr) {
     var day = formattedDatesArr[index]["day"];
     var month = formattedDatesArr[index]["month"];
     var year = formattedDatesArr[index]["year"];
-    if (year == 2024) {
+    if (year == 2025) {
       if (
         (earliestMonth == lastMonth &&
           day >= earliestDate &&
@@ -373,7 +375,7 @@ async function startService() {
     }
     if (ofcBookingBinaryResponse == 1) {
       if (isOFCOnly) return 1;
-      var consularBookingBinaryResponse = await startConsular('mumbai');
+      var consularBookingBinaryResponse = await startConsular(tempCity);
       if (consularBookingBinaryResponse == 1) {
         return 1;
       } else {
@@ -384,12 +386,12 @@ async function startService() {
     }
   } else if (ofcBooked && !consularBooked) {
     for (let conCity in consular_ids) {
-      var consularBookingBinaryResponse = await startConsular('mumbai');
+      var consularBookingBinaryResponse = await startConsular(tempCity);
       if (consularBookingBinaryResponse == 1) {
         return 1;
       }
     }
-    var consularBookingBinaryResponse = await startConsular('mumbai');
+    var consularBookingBinaryResponse = await startConsular(tempCity);
     if (consularBookingBinaryResponse == 1) {
       return 1;
     } else {
@@ -421,11 +423,11 @@ async function startOFC(city) {
   console.log(
     `Latest Slot Date: ${day} ${monthNames[month - 1]["abbreviation"]} ${year}`
   );
-  if (year != 2024) {
-    return 0;
-  } else if (year == 2024 && month > lastMonth) {
-    return 0;
-  }
+  // if (year != 2025) {
+  //   return 0;
+  // } else if (year == 2025 && month > lastMonth) {
+  //   return 0;
+  // }
   var eligibleDatesArr = getEligibleDates(formattedDatesArr);
   console.log(eligibleDatesArr);
   if (eligibleDatesArr.length == 0) {
@@ -556,11 +558,11 @@ async function startConsular(city) {
   }
   var latestConsularSlotID = consularSlots[0]["ID"];
   console.log(consularSlots, latestConsularSlotID)
-  var consularBookingResponse = await bookConsularSlot(
-    'mumbai',
-    latestConsularDateID,
-    latestConsularSlotID
-  );
+  // var consularBookingResponse = await bookConsularSlot(
+  //   tempCity,
+  //   latestConsularDateID,
+  //   latestConsularSlotID
+  // );
   console.log(latestConsularDateID, latestConsularSlotID);
   if (consularBookingResponse["AllScheduled"] == true) {
     consularBooked = true;
@@ -656,7 +658,7 @@ async function getOFCDate(city) {
         // console.log('Error In Getting OFC Date!')
         errorCount++;
       }
-      if (error.name !== "AbortError") console.log("Exception!");
+      if (error.name !== "AbortError") console.log(error);
       continue;
     }
   }
