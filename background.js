@@ -106,7 +106,7 @@ var ofcBookedDate = 0;
 var ofcBookedMonth = 0;
 var ofcBookedTotalDaysSinceZero = 0;
 var tempMinute = 100;
-var tempCity = 'kolkata'
+var tempCity = 'hyderabad'
 
 function sleep(ms) {
   clearInterval(sleepSetTimeout_ctrl);
