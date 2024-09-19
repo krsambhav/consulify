@@ -106,7 +106,7 @@ var ofcBookedDate = 0;
 var ofcBookedMonth = 0;
 var ofcBookedTotalDaysSinceZero = 0;
 var tempMinute = 100;
-var tempCity = 'hyderabad'
+var tempCity = 'mumbai'
 
 function sleep(ms) {
   clearInterval(sleepSetTimeout_ctrl);
@@ -558,11 +558,12 @@ async function startConsular(city) {
   }
   var latestConsularSlotID = consularSlots[0]["ID"];
   console.log(consularSlots, latestConsularSlotID)
-  // var consularBookingResponse = await bookConsularSlot(
-  //   tempCity,
-  //   latestConsularDateID,
-  //   latestConsularSlotID
-  // );
+  // await sleep(50000)
+  var consularBookingResponse = await bookConsularSlot(
+    tempCity,
+    latestConsularDateID,
+    latestConsularSlotID
+  );
   console.log(latestConsularDateID, latestConsularSlotID);
   if (consularBookingResponse["AllScheduled"] == true) {
     consularBooked = true;
