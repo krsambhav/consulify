@@ -91,6 +91,7 @@ var isConsularOnly;
 var forceOFC = false;
 
 //Don't Touch
+var contactId;
 var rawMsg;
 var serviceStarted = false;
 var sleepSetTimeout_ctrl;
@@ -106,7 +107,7 @@ var ofcBookedDate = 0;
 var ofcBookedMonth = 0;
 var ofcBookedTotalDaysSinceZero = 0;
 var tempMinute = 100;
-var tempCity = 'mumbai'
+var tempCity = "kolkata";
 
 function sleep(ms) {
   clearInterval(sleepSetTimeout_ctrl);
@@ -174,6 +175,8 @@ function messageReceived(msg) {
     awaitChecker = msg["awaitChecker"];
     delay = msg["delay"];
     fetchTimeout = msg["fetchTimeout"];
+    contactId = '551c5890-98b3-ee11-a568-001dd8031360';
+    // contactId = msg["contactId"];
     traceValue = generateRandomStringBytes(16);
   }
   async function initiateConsole() {
@@ -278,7 +281,7 @@ function randomFloat(min, max) {
 }
 
 function populateGroup() {
-  console.log(applicationIDs)
+  // console.log(applicationIDs)
   if (applicationIDs.length == 0) {
     return primaryID;
   } else {
@@ -511,9 +514,9 @@ async function startConsular(city) {
   console.log(`Checking For ${city}`);
   try {
     var consularDatesResponse = await getConsularDates(city);
-    // console.log(consularDatesResponse)
+    console.log(consularDatesResponse);
     var consularDates = consularDatesResponse["ScheduleDays"];
-    console.log(consularDates)
+    console.log(consularDates);
     var latestConsularDateID;
     var latestConsularDate;
     if (consularDates.length > 0) {
@@ -532,6 +535,7 @@ async function startConsular(city) {
     messageReceived(rawMsg);
   }
   var { day, month, year } = formatRawDate(latestConsularDate);
+  console.log(day);
   var consularDaysSinceZero = (month - 1) * 30 + day;
   if (
     consularDaysSinceZero - ofcBookedTotalDaysSinceZero > consularRange &&
@@ -557,7 +561,7 @@ async function startConsular(city) {
     return 0;
   }
   var latestConsularSlotID = consularSlots[0]["ID"];
-  console.log(consularSlots, latestConsularSlotID)
+  console.log(consularSlots, latestConsularSlotID);
   // await sleep(50000)
   var consularBookingResponse = await bookConsularSlot(
     tempCity,
@@ -608,7 +612,7 @@ async function getOFCDate(city) {
       //   }","isReschedule":${isRes}}`
       // );
       const response = await fetchWithTimeout(
-        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-ofc-schedule-days&cacheString=${now}`,
+        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-ofc-schedule-days&appd=${contactId}&cacheString=${now}`,
         {
           headers: {
             accept: "application/json, text/javascript, */*; q=0.01",
@@ -672,7 +676,7 @@ async function getOFCSlot(dayID, city) {
       const now = Date.now(); // Unix timestamp in milliseconds
       // console.log(now);
       const response = await fetch(
-        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-ofc-schedule-entries&cacheString=${now}`,
+        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-ofc-schedule-entries&appd=${contactId}&cacheString=${now}`,
         {
           headers: {
             accept: "application/json, text/javascript, */*; q=0.01",
@@ -768,8 +772,9 @@ async function getConsularDates(consularLocation) {
     await sleep(randomNumber);
     try {
       const now = Date.now(); // Unix timestamp in milliseconds
+      console.log(`https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-consular-schedule-days&appd=${contactId}&cacheString=${now}`)
       const response = await fetchWithTimeout(
-        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-consular-schedule-days&cacheString=${now}`,
+        `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-consular-schedule-days&appd=${contactId}&cacheString=${now}`,
         {
           headers: {
             accept: "application/json, text/javascript, */*; q=0.01",
@@ -804,9 +809,11 @@ async function getConsularDates(consularLocation) {
         }
       );
       consularErrorCount = 0;
+      console.log(response)
       const data = await response.json();
       return data;
     } catch (error) {
+      console.error(error)
       if (error.name === "AbortError") {
         timeoutCount++;
         console.log(`Consular Timeout Exception. Count: ${timeoutCount}`);
@@ -824,7 +831,7 @@ async function getConsularDates(consularLocation) {
 async function getConsularSlots(consularLocation, dayID) {
   const now = Date.now(); // Unix timestamp in milliseconds
   const response = await fetch(
-    `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-consular-schedule-entries&cacheString=${now}`,
+    `https://www.usvisascheduling.com/en-US/custom-actions/?route=/api/v1/schedule-group/get-family-consular-schedule-entries&appd=${contactId}&cacheString=${now}`,
     {
       headers: {
         accept: "application/json, text/javascript, */*; q=0.01",

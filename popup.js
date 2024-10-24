@@ -1,5 +1,6 @@
 var traceValue = generateRandomStringBytes(16);
 var parentValue = generateRandomStringBytes(8);
+var contactId;
 
 function generateRandomStringBytes(size) {
   let id = "";
@@ -37,6 +38,8 @@ async function populateUserSelect() {
     option.value = user.id;
     option.dataset.applicantsId = user.applicantsID;
     option.dataset.reschedule = user.reschedule;
+    option.dataset.name = user.name;
+    option.dataset.contactId = user.contactId;
     option.innerHTML = user.name;
     userSelect.appendChild(option);
   });
@@ -45,6 +48,8 @@ async function populateUserSelect() {
     const selectedOption = userSelect.options[userSelect.selectedIndex];
     const userId = selectedOption.value;
     const applicantsId = selectedOption.dataset.applicantsId;
+    contactId = selectedOption.dataset.contactId;
+    console.log(selectedOption.dataset)
     const isRes = selectedOption.dataset.reschedule === "false" ? 0 : 1;
     console.log(selectedOption.dataset)
     document.getElementById('primary-id-input').value = userId;
@@ -191,7 +196,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   var consularCity = "mumbai";
   var consularRange;
   var awaitChecker = "";
-  var delay = 10;
+  var delay= 8;
   var isConsularOnly;
   var isOFCOnly;
   var rescheduleInputValue;
@@ -612,6 +617,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       fetchTimeout,
       isOFCOnly,
       isConsularOnly,
+      contactId
     };
     chrome.runtime.sendMessage(userDetails, function (response) {
       console.log(response);
